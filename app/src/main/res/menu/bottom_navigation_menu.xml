@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/menu/bottom_navigation_menu.xml -->
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/dashboard_icon"
+        android:title="Dashboard"
+        app:showAsAction="always|withText"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black" />
+
+    <item
+        android:id="@+id/nav_pencatatan"
+        android:icon="@drawable/pencatatan_icon"
+        android:title="Pencatatan"
+        app:showAsAction="always|withText"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"  />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/profile_icon"
+        android:title="Profile"
+        app:showAsAction="always|withText"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black" />
+</menu>

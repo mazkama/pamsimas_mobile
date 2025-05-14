@@ -1,0 +1,6 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Pamsimas" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Warna dasar, sesuaikan -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
+</resources>
