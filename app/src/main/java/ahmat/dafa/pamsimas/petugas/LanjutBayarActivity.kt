@@ -125,7 +125,7 @@ class LanjutBayarActivity : AppCompatActivity() {
             rvKategori.layoutManager = LinearLayoutManager(this@LanjutBayarActivity)
             rvKategori.adapter = kategoriAdapter
 
-            tvDenda.text = "Rp ${formatCurrency(transaksi.denda)}"
+            //tvDenda.text = "Rp ${formatCurrency(transaksi.denda)}"
 
 
             val idTransaksi = transaksi.id_transaksi.toString()

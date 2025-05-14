@@ -36,8 +36,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <!-- Header with ID and Date -->
-                <!-- Header with ID, Date and Status -->
+                <!-- Header with ID and Date only -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -84,36 +83,31 @@
                         android:text="01/01/2024"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
+                </LinearLayout>
 
-                    <!-- Spacer -->
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                <!-- Status section - Simple text without background -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
 
-                    <!-- Status section -->
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/txStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:text="Dibaca"
+                        android:textColor="#FF000000"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
 
-                        <TextView
-                            android:id="@+id/txStatus"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Dibaca"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            android:textStyle="bold"/>
-
-                        <View
-                            android:id="@+id/colorStatus"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginStart="4dp"
-                            android:background="#FFA500" />
-                    </LinearLayout>
+                    <View
+                        android:id="@+id/colorStatus"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginStart="4dp"
+                        android:background="#FFA500" />
                 </LinearLayout>
 
                 <View

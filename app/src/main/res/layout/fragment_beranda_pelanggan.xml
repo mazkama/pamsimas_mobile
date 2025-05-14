@@ -350,7 +350,7 @@
 
             <!-- Usage Chart -->
 
-            <!-- Announcements -->
+            <!-- Announcements - BAGIAN INI YANG DIPERBAIKI -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/announcementsCard"
                 android:layout_width="match_parent"
@@ -388,11 +388,12 @@
                         android:visibility="gone"
                         android:padding="16dp"/>
 
+                    <!-- BAGIAN PENGADUAN YANG DIPERBAIKI -->
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cvPengaduan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
+                        android:layout_margin="10dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="5dp">
@@ -424,13 +425,12 @@
                                     android:layout_weight="1"
                                     android:orientation="vertical">
 
-                                    <!-- Header with ID and Date -->
-                                    <!-- Header with ID, Date and Status -->
+                                    <!-- Header with ID and Date only -->
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:gravity="center_vertical"
-                                        android:orientation="horizontal">
+                                        android:orientation="horizontal"
+                                        android:gravity="center_vertical">
 
                                         <!-- ID section -->
                                         <LinearLayout
@@ -472,36 +472,31 @@
                                             android:text="01/01/2024"
                                             android:textColor="@color/black"
                                             android:textSize="12sp" />
+                                    </LinearLayout>
 
-                                        <!-- Spacer -->
-                                        <View
-                                            android:layout_width="0dp"
-                                            android:layout_height="0dp"
-                                            android:layout_weight="1" />
+                                    <!-- Status section - Simple text without background -->
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:gravity="center_vertical"
+                                        android:layout_marginTop="4dp">
 
-                                        <!-- Status section -->
-                                        <LinearLayout
+                                        <TextView
+                                            android:id="@+id/txStatus"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:gravity="center_vertical"
-                                            android:orientation="horizontal">
+                                            android:text="Dibaca"
+                                            android:textColor="#FF000000"
+                                            android:textSize="12sp"
+                                            android:textStyle="bold"/>
 
-                                            <TextView
-                                                android:id="@+id/txStatus"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="Dibaca"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                android:textStyle="bold" />
-
-                                            <View
-                                                android:id="@+id/colorStatus"
-                                                android:layout_width="12dp"
-                                                android:layout_height="12dp"
-                                                android:layout_marginStart="4dp"
-                                                android:background="#FFA500" />
-                                        </LinearLayout>
+                                        <View
+                                            android:id="@+id/colorStatus"
+                                            android:layout_width="10dp"
+                                            android:layout_height="10dp"
+                                            android:layout_marginStart="4dp"
+                                            android:background="#FFA500" />
                                     </LinearLayout>
 
                                     <View
@@ -525,11 +520,11 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="2dp"
-                                        android:ellipsize="end"
-                                        android:maxLines="2"
                                         android:text="Pipa air bocor di depan rumah yang menyebabkan genangan air di jalan."
                                         android:textColor="@color/black"
-                                        android:textSize="13sp" />
+                                        android:textSize="13sp"
+                                        android:maxLines="2"
+                                        android:ellipsize="end" />
 
                                     <!-- Divider -->
                                     <View
@@ -553,12 +548,11 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="2dp"
-                                        android:ellipsize="end"
-                                        android:maxLines="2"
                                         android:text="Petugas akan segera datang untuk memperbaiki pipa yang bocor."
                                         android:textColor="#006400"
-                                        android:textSize="13sp" />
-
+                                        android:textSize="13sp"
+                                        android:maxLines="2"
+                                        android:ellipsize="end" />
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
