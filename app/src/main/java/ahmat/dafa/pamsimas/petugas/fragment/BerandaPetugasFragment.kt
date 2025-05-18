@@ -5,6 +5,7 @@ import ahmat.dafa.pamsimas.R
 import ahmat.dafa.pamsimas.databinding.FragmentBerandaPetugasBinding
 import ahmat.dafa.pamsimas.model.PetugasBerandaResponse
 import ahmat.dafa.pamsimas.model.Transaksi
+import ahmat.dafa.pamsimas.model.UserResponse
 import ahmat.dafa.pamsimas.network.ApiClient
 import ahmat.dafa.pamsimas.petugas.DataKeluhanActivity
 import ahmat.dafa.pamsimas.petugas.DataRiwayatActivity
@@ -16,6 +17,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +26,9 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -57,21 +62,7 @@ class BerandaPetugasFragment : Fragment() {
 
         sharedPreferences = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
 
-
-        val foto_profile = sharedPreferences.getString("foto_profile", null)
-        val nama = sharedPreferences.getString("nama", null)
-        b.tvNamaPetugas.text = nama ?: "Tidak Ditemukan"
-        if (!foto_profile.isNullOrEmpty()) {
-            Glide.with(this)
-                .load(foto_profile)
-                .placeholder(R.drawable.person_svgrepo_com) // gambar default saat loading
-                .error(R.drawable.person_svgrepo_com) // gambar default kalau error
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(b.ivProfilePic)
-        } else {
-            // Jika foto_profile null atau kosong, pakai default
-            b.ivProfilePic.setImageResource(R.drawable.person_svgrepo_com)
-        }
+        showStoredUserData()
 
         // Jalankan realtime jam
         startRealTimeClock()
@@ -85,6 +76,7 @@ class BerandaPetugasFragment : Fragment() {
         }
 
         b.swipeRefresh.setOnRefreshListener {
+            fetchUserData()
             loadDashboardData()
         }
 
@@ -111,8 +103,6 @@ class BerandaPetugasFragment : Fragment() {
                 Toast.makeText(requireContext(), "Gambar belum tersedia.", Toast.LENGTH_SHORT).show()
             }
         }
-
-
 
         b.closePreviewButton.setOnClickListener {
             b.previewOverlay.visibility = View.GONE
@@ -311,7 +301,60 @@ class BerandaPetugasFragment : Fragment() {
         }
     }
 
+    fun fetchUserData() {
+        val token = sharedPreferences.getString("token", null)
 
+        if (token == null) {
+            Toast.makeText(context, "Token tidak ditemukan.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        ApiClient.getInstance(thisParent, token).getUser().enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.isSuccessful) {
+                    val userResponse = response.body()
+                    val data = userResponse
+
+                    if (data != null) {
+                        val editor = sharedPreferences.edit()
+                        editor.putString("id", data.id_users)
+                        editor.putString("nama", data.nama)
+                        editor.putString("alamat", data.alamat)
+                        editor.putString("no_hp", data.no_hp)
+                        editor.putString("username", data.username)
+                        editor.putString("role", data.role)
+                        editor.putString("foto_profile", data.foto_profile)
+                        editor.apply()
+
+                        showStoredUserData()
+                    }
+                } else {
+                    Toast.makeText(context, "Gagal perbarui data pengguna.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                Toast.makeText(context, "Kesalahan jaringan: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun showStoredUserData() {
+        val foto_profile = sharedPreferences.getString("foto_profile", null)
+        val nama = sharedPreferences.getString("nama", null)
+        b.tvNamaPetugas.text = nama ?: "Tidak Ditemukan"
+        if (!foto_profile.isNullOrEmpty()) {
+            Glide.with(this)
+                .load(foto_profile)
+                .placeholder(R.drawable.person_svgrepo_com) // gambar default saat loading
+                .error(R.drawable.person_svgrepo_com) // gambar default kalau error
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(b.ivProfilePic)
+        } else {
+            // Jika foto_profile null atau kosong, pakai default
+            b.ivProfilePic.setImageResource(R.drawable.person_svgrepo_com)
+        }
+    }
 
     private fun showError(message: String) {
         if (isAdded) {

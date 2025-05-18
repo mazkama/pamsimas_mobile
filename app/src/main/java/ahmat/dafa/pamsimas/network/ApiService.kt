@@ -9,6 +9,7 @@ import ahmat.dafa.pamsimas.model.PemakaianResponse
 import ahmat.dafa.pamsimas.model.PemakaianStoreResponse
 import ahmat.dafa.pamsimas.model.PetugasBerandaResponse
 import ahmat.dafa.pamsimas.model.TransaksiResponse
+import ahmat.dafa.pamsimas.model.UserResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -25,6 +26,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+
+    @GET("user")
+    fun getUser(): Call<UserResponse>
+
     @GET("pemakaian")
     fun getPemakaian(
         @Query("search") search: String,
@@ -82,7 +87,6 @@ interface ApiService {
     fun getDetailTransaksi(
         @Path("id") idTransaksi: String
     ): Call<TransaksiBayarResponse>
-
 
     @GET("dashboard/petugas")
     fun getDashboardPetugas(): Call<PetugasBerandaResponse>

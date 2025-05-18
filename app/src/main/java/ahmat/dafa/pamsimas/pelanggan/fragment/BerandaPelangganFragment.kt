@@ -7,6 +7,7 @@ import ahmat.dafa.pamsimas.databinding.FragmentBerandaPelangganBinding
 import ahmat.dafa.pamsimas.model.Keluhan
 import ahmat.dafa.pamsimas.model.PelangganBerandaResponse
 import ahmat.dafa.pamsimas.model.Transaksi
+import ahmat.dafa.pamsimas.model.UserResponse
 import ahmat.dafa.pamsimas.network.ApiClient
 import ahmat.dafa.pamsimas.petugas.DataKeluhanActivity
 import ahmat.dafa.pamsimas.petugas.DataRiwayatActivity
@@ -27,6 +28,9 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -81,6 +85,7 @@ class BerandaPelangganFragment : Fragment() {
 
         b.swipeRefresh.setOnRefreshListener {
             loadDashboardData()
+            fetchUserData()
         }
 
         b.btnUsageHistory.setOnClickListener {
@@ -230,7 +235,6 @@ class BerandaPelangganFragment : Fragment() {
         }
     }
 
-
     private fun saveDashboardDataToPreferences(
         transaksiTerbaru: Transaksi?,
         keluhanTerbaru: Keluhan?
@@ -271,7 +275,6 @@ class BerandaPelangganFragment : Fragment() {
             .putString("dashboard_data", json.toString())
             .apply()
     }
-
 
     private fun showStoredDashboardData() {
         val dataJson = sharedPreferences.getString("dashboard_data", null) ?: return
@@ -371,6 +374,49 @@ class BerandaPelangganFragment : Fragment() {
             b.cvPengaduan.visibility = View.GONE
             b.tvNoData.visibility = View.VISIBLE
         }
+    }
+
+    fun fetchUserData() {
+        val token = sharedPreferences.getString("token", null)
+
+        if (token == null) {
+            Toast.makeText(context, "Token tidak ditemukan.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        ApiClient.getInstance(thisParent, token).getUser().enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.isSuccessful) {
+                    val userResponse = response.body()
+                    val data = userResponse
+
+                    if (data != null) {
+                        val editor = sharedPreferences.edit()
+                        editor.putString("id", data.id_users)
+                        editor.putString("nama", data.nama)
+                        editor.putString("alamat", data.alamat)
+                        editor.putString("no_hp", data.no_hp)
+                        editor.putString("username", data.username)
+                        editor.putString("role", data.role)
+                        editor.putString("foto_profile", data.foto_profile)
+                        editor.apply()
+
+                        showStoredUserData()
+                    }
+                } else {
+                    Toast.makeText(context, "Gagal perbarui data pengguna.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                Toast.makeText(context, "Kesalahan jaringan: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun showStoredUserData() {
+        val nama = sharedPreferences.getString("nama", null)
+        b.tvCustomerName.text = "Halo, ${nama}" ?: "Tidak Ditemukan"
     }
 
     private fun showError(message: String) {

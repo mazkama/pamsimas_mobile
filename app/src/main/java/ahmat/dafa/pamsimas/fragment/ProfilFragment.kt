@@ -93,8 +93,6 @@ class ProfilFragment : Fragment() {
             }
         }
 
-
-
         b.closePreviewButton.setOnClickListener {
             b.previewOverlay.visibility = View.GONE
         }
