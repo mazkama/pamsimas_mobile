@@ -9,11 +9,18 @@ import ahmat.dafa.pamsimas.petugas.adapter.KategoriAdapter
 import ahmat.dafa.pamsimas.utils.CurrencyHelper.formatCurrency
 import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import java.io.File
+import java.io.FileOutputStream
 
 class CetakActivity  : AppCompatActivity() {
 
@@ -68,12 +75,56 @@ class CetakActivity  : AppCompatActivity() {
             b.tvChange.text = "Rp ${formatCurrency(pemakaian.data.kembalian)}"
         }
 
+        b.btnShare.setOnClickListener {
+            shareStrukLayout()
+        }
+
         b.btnClose.setOnClickListener {
             setResult(Activity.RESULT_OK)
             finish()
         }
 
     }
+
+    private fun getBitmapFromView(view: View): Bitmap {
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+        return bitmap
+    }
+
+    private fun saveBitmapToFile(bitmap: Bitmap): File {
+        val file = File(getExternalFilesDir(null), "struk_${System.currentTimeMillis()}.png")
+        val outputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        outputStream.flush()
+        outputStream.close()
+        return file
+    }
+
+    private fun shareImageFile(file: File) {
+        val uri = FileProvider.getUriForFile(
+            this,
+            "${packageName}.fileprovider",
+            file
+        )
+
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "image/*"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        startActivity(Intent.createChooser(shareIntent, "Bagikan struk via..."))
+    }
+
+    private fun shareStrukLayout() {
+        val view = findViewById<View>(R.id.layoutStruk)
+        val bitmap = getBitmapFromView(view)
+        val file = saveBitmapToFile(bitmap)
+        shareImageFile(file)
+    }
+
     // Override onBackPressed untuk menangani back button ketika proses sedang berjalan
     override fun onBackPressed() {
         setResult(Activity.RESULT_OK)

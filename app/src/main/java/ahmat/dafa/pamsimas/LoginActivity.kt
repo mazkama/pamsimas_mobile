@@ -124,13 +124,13 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         Handler(Looper.getMainLooper()).post {
                             b.progressBar.visibility = View.GONE
-                            Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LoginActivity, "Username atau password salah !", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } else {
                     Handler(Looper.getMainLooper()).post {
                         b.progressBar.visibility = View.GONE
-                        Toast.makeText(this@LoginActivity, "Login gagal: ${response.code}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "Username atau password salah !", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -8,10 +8,12 @@ import ahmat.dafa.pamsimas.model.PemakaianResponse
 import ahmat.dafa.pamsimas.model.PemakaianStoreResponse
 import ahmat.dafa.pamsimas.network.ApiClient
 import ahmat.dafa.pamsimas.utils.QRCodeHelper
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -21,6 +23,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -42,6 +46,9 @@ class PencatatanActivity : AppCompatActivity() {
     private var isProcessing = false // Flag untuk mencegah duplikasi request
     private lateinit var dialog: Dialog
     private var dataPelanggan: Pemakaian? = null // bisa diakses di mana saja dalam activity
+
+    private val CAMERA_PERMISSION_CODE = 101
+    private val GALLERY_PERMISSION_CODE = 201
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,16 +131,62 @@ class PencatatanActivity : AppCompatActivity() {
     }
 
     // Fungsi untuk membuka kamera
+    private fun openCameraWithPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_CODE
+            )
+        } else {
+            openCamera()
+        }
+    }
+
     private fun openCamera() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
     }
 
+
     // Fungsi untuk membuka galeri
+    private fun openGalleryWithPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                GALLERY_PERMISSION_CODE
+            )
+        } else {
+            openGallery()
+        }
+    }
+
     private fun openGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 100) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Izin diberikan
+                Toast.makeText(this, "Izin kamera diberikan", Toast.LENGTH_SHORT).show()
+            } else {
+                // Izin ditolak
+                Toast.makeText(this, "Izin kamera ditolak", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     // Menangani hasil dari kamera atau galeri
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

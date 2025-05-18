@@ -44,6 +44,11 @@ class UbahPasswordActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if (newPassword.length < 6) {
+                Toast.makeText(this, "Password baru minimal 6 karakter", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if (newPassword != confirmPassword) {
                 Toast.makeText(this, "Konfirmasi password tidak cocok", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -88,7 +93,7 @@ class UbahPasswordActivity : AppCompatActivity() {
                     try {
                         val json = JSONObject(errorString)
                         val message = json.optString("message")
-                        Toast.makeText(this@UbahPasswordActivity, message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@UbahPasswordActivity, "Password lama tidak sesuai", Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Toast.makeText(this@UbahPasswordActivity, "Gagal memproses error response", Toast.LENGTH_SHORT).show()

@@ -6,14 +6,19 @@ import ahmat.dafa.pamsimas.pelanggan.fragment.BerandaPelangganFragment
 import ahmat.dafa.pamsimas.pelanggan.fragment.TambahKeluhanFragment
 import ahmat.dafa.pamsimas.petugas.fragment.BerandaPetugasFragment
 import ahmat.dafa.pamsimas.petugas.fragment.DataPemakaianFragment
+import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.navigation.NavigationBarView
 import okhttp3.OkHttpClient
@@ -85,6 +90,33 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         }
 
         return true
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        // Memeriksa izin untuk notifikasi hanya di Android 13 dan lebih baru
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                // Jika izin belum diberikan, minta izin
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1
+                )
+            }
+        }
+
+        // Memeriksa dan meminta izin kamera
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                100 // kode request bebas, gunakan nilai unik
+            )
+        }
     }
 
 }
