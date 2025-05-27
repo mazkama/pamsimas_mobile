@@ -63,6 +63,11 @@ class LoginActivity : AppCompatActivity() {
             // Agar cursor tetap di akhir teks
             b.edPassword.setSelection(b.edPassword.text?.length ?: 0)
         }
+
+        b.tvForgotPassword.setOnClickListener {
+            val intent = Intent(this, ActivityLupaPassword::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun handleLogin(username: String, password: String) {

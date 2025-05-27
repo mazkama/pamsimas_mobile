@@ -3,6 +3,8 @@ package ahmat.dafa.pamsimas.network
 import PemakaianBayarResponse
 import TransaksiBayarRequest
 import TransaksiBayarResponse
+import ahmat.dafa.pamsimas.model.ForgotPasswordRequest
+import ahmat.dafa.pamsimas.model.ForgotPasswordResponse
 import ahmat.dafa.pamsimas.model.KeluhanResponse
 import ahmat.dafa.pamsimas.model.PelangganBerandaResponse
 import ahmat.dafa.pamsimas.model.PemakaianResponse
@@ -102,6 +104,8 @@ interface ApiService {
         @Field("new_password_confirmation") newPasswordConfirmation: String
     ): Call<ResponseBody>
 
+    @POST("auth/forgot-password")
+    fun forgotPassword(@Body request: ForgotPasswordRequest): Call<ForgotPasswordResponse>
 
 
 }

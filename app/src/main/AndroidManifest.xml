@@ -127,6 +127,15 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <!-- ActivityLupaPassword sebagai aktivitas utama -->
+        <activity
+            android:name=".ActivityLupaPassword"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity
             android:name=".MyCaptureActivity"
             android:screenOrientation="portrait"
