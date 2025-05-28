@@ -69,7 +69,7 @@ class BerandaPelangganFragment : Fragment() {
         val id_pelanggan = sharedPreferences.getString("id", null)
         val nama = sharedPreferences.getString("nama", null)
         b.tvCustomerName.text = "Halo, ${nama}" ?: "Tidak Ditemukan"
-        b.tvCustomerId.text = "ID: PAMS${id_pelanggan}" ?: "-"
+        b.tvCustomerId.text = "ID: PAMS ${id_pelanggan}" ?: "-"
         b.tvWaterStatus.text = "SUMBER SEHAT#${id_pelanggan ?: 0}"
 
         // Jalankan realtime jam

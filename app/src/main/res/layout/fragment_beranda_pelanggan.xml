@@ -126,7 +126,7 @@
                         android:id="@+id/tvMonth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tagihan Bulan Ini"
+                        android:text="Tagihan Terbaru"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />

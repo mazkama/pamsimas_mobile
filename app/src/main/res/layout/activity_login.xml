@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
-                android:text="Selamat datang di PAMSIMAS Dusun Watuduwur."
+                android:text="Selamat datang di PAMSIMAS Desa Tenggerlor."
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -157,7 +157,7 @@
                 android:focusable="true"
                 android:text="Lupa Username/Password?"
                 android:textColor="@color/colorPrimary"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <ProgressBar
@@ -191,7 +191,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="© 2023 PAMSIMAS Dusun Watuduwur"
+        android:text="© 2023 PAMSIMAS Desa Tenggerlor"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Dsn.Watuduwur Ds.Tenggerlor\nKec.Kunjang Kab.Kediri\nTelp: +62 857-8599-5219"
+                android:text="Ds.Tenggerlor\nKec.Kunjang Kab.Kediri\nTelp: +62 857-8599-5219"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="16sp" />
