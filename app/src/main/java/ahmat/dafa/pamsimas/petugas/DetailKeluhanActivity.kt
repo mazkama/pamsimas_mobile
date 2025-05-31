@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 
 class DetailKeluhanActivity : AppCompatActivity() {
 
@@ -56,11 +57,17 @@ class DetailKeluhanActivity : AppCompatActivity() {
 
             val foto_keluhan = keluhan.foto_keluhan
             if (!foto_keluhan.isNullOrEmpty() && foto_keluhan != "-") {
-                Glide.with(b.ivComplaintPhoto.context)
-                    .load(foto_keluhan)
+                // Konfigurasi Glide untuk kualitas tinggi pada ImageView biasa
+                val requestOptions = RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.drawable.baseline_camera_alt_24)
                     .error(R.drawable.baseline_camera_alt_24)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
+                    .dontTransform()
+
+                Glide.with(b.ivComplaintPhoto.context)
+                    .load(foto_keluhan)
+                    .apply(requestOptions)
                     .into(b.ivComplaintPhoto)
             } else {
                 // Jika URL null, kosong, atau "-", set default image
@@ -68,11 +75,22 @@ class DetailKeluhanActivity : AppCompatActivity() {
             }
 
             b.ivComplaintPhoto.setOnClickListener {
-                val drawable = b.ivComplaintPhoto.drawable
-                Glide.with(this)
-                    .load(drawable)
-                    .into(b.fullscreenImageView)
-                b.previewOverlay.visibility = View.VISIBLE
+                if (!foto_keluhan.isNullOrEmpty() && foto_keluhan != "-") {
+                    // Konfigurasi Glide untuk kualitas tinggi pada fullscreen
+                    val fullscreenRequestOptions = RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.baseline_camera_alt_24)
+                        .error(R.drawable.baseline_camera_alt_24)
+                        .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
+                        .dontTransform()
+
+                    Glide.with(this)
+                        .load(foto_keluhan) // Gunakan URL asli, bukan drawable
+                        .apply(fullscreenRequestOptions)
+                        .into(b.fullscreenImageView)
+
+                    b.previewOverlay.visibility = View.VISIBLE
+                }
             }
 
             b.closePreviewButton.setOnClickListener {

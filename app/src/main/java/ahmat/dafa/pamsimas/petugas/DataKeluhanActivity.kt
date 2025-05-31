@@ -1,6 +1,7 @@
 package ahmat.dafa.pamsimas.petugas
 
 import KategoriBiaya
+import ahmat.dafa.pamsimas.R
 import ahmat.dafa.pamsimas.databinding.ActivityRiwayatKeluhanBinding
 import ahmat.dafa.pamsimas.model.Keluhan
 import ahmat.dafa.pamsimas.model.KeluhanResponse
@@ -19,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,15 +65,25 @@ class DataKeluhanActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         keluhanAdapter = DataKeluhanAdapter(
-        keluhanList,
+            keluhanList,
             onItemClick = { Keluhan ->
                 // Aksi saat item diklik
             },
             onImageClick = { imagePath ->
                 if (imagePath != null) {
+                    // Konfigurasi Glide untuk kualitas tinggi seperti di adapter
+                    val requestOptions = RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache semua versi gambar
+                        .placeholder(R.drawable.baseline_camera_alt_24)
+                        .error(R.drawable.baseline_camera_alt_24)
+                        .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL) // Gunakan ukuran asli
+                        .dontTransform() // Jangan transform gambar untuk menjaga kualitas
+
                     Glide.with(this)
                         .load(imagePath)
+                        .apply(requestOptions)
                         .into(b.fullscreenImageView)
+
                     b.previewOverlay.visibility = View.VISIBLE
                     b.cardSearch.setVisibility(View.GONE);
                 }

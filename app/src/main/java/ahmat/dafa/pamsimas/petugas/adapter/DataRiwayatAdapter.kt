@@ -25,6 +25,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import okhttp3.Callback
 import retrofit2.Call
@@ -33,7 +34,7 @@ import retrofit2.Response
 class DataRiwayatAdapter(
     private var transaksiList: MutableList<Transaksi>,
     private val onItemClick: (Transaksi) -> Unit,
-    private val onImageClick: (drawable: Drawable?) -> Unit
+    private val onImageClick: (String?) -> Unit // Ubah parameter untuk pass URL asli
 ) : RecyclerView.Adapter<DataRiwayatAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemRiwayatBinding) :
@@ -58,20 +59,30 @@ class DataRiwayatAdapter(
 
                 val foto_meteran = item.foto_meteran
                 if (!foto_meteran.isNullOrEmpty() && foto_meteran != "-") {
-                    Glide.with(ivFoto.context)
-                        .load(foto_meteran)
+                    // Konfigurasi Glide untuk kualitas tinggi
+                    val requestOptions = RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache semua versi gambar
                         .placeholder(R.drawable.baseline_camera_alt_24)
                         .error(R.drawable.baseline_camera_alt_24)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL) // Gunakan ukuran asli
+                        .dontTransform() // Jangan transform gambar untuk menjaga kualitas
+
+                    Glide.with(ivFoto.context)
+                        .load(foto_meteran)
+                        .apply(requestOptions)
                         .into(ivFoto)
                 } else {
                     // Jika URL null, kosong, atau "-", set default image
                     ivFoto.setImageResource(R.drawable.baseline_camera_alt_24)
                 }
 
+                // BAGIAN PEMBESARAN FOTO - Pass URL asli untuk kualitas maksimal
                 ivFoto.setOnClickListener {
-                    val drawable = ivFoto.drawable
-                    onImageClick(drawable)
+                    if (!foto_meteran.isNullOrEmpty() && foto_meteran != "-") {
+                        onImageClick(foto_meteran) // Pass URL asli
+                    } else {
+                        onImageClick(null)
+                    }
                 }
 
                 root.setOnClickListener {

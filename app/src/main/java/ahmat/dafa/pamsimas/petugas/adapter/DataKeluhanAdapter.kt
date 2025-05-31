@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -29,7 +30,7 @@ import java.util.Locale
 class DataKeluhanAdapter (
     private var keluhanList: MutableList<Keluhan>,
     private val onItemClick: (Keluhan) -> Unit,
-    private val onImageClick: (drawable: Drawable?) -> Unit
+    private val onImageClick: (String?) -> Unit // Ubah parameter untuk pass URL asli
 ) : RecyclerView.Adapter<DataKeluhanAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemKeluhanBinding) :
@@ -53,6 +54,7 @@ class DataKeluhanAdapter (
             txKeterangan.text = item.keterangan
             txStatus.text = item.status
             txTanggapan.text = item.tanggapan ?: "-"
+
             // Format tanggal
             val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -67,11 +69,17 @@ class DataKeluhanAdapter (
 
             val foto_keluhan = item.foto_keluhan
             if (!foto_keluhan.isNullOrEmpty() && foto_keluhan != "-") {
-                Glide.with(ivFoto.context)
-                    .load(foto_keluhan)
+                // Konfigurasi Glide untuk kualitas tinggi
+                val requestOptions = RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache semua versi gambar
                     .placeholder(R.drawable.baseline_camera_alt_24)
                     .error(R.drawable.baseline_camera_alt_24)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL) // Gunakan ukuran asli
+                    .dontTransform() // Jangan transform gambar untuk menjaga kualitas
+
+                Glide.with(ivFoto.context)
+                    .load(foto_keluhan)
+                    .apply(requestOptions)
                     .into(ivFoto)
             } else {
                 // Jika URL null, kosong, atau "-", set default image
@@ -87,9 +95,13 @@ class DataKeluhanAdapter (
             }
             colorStatus.setBackgroundColor(color)
 
+            // BAGIAN PEMBESARAN FOTO - Pass URL asli untuk kualitas maksimal
             ivFoto.setOnClickListener {
-                val drawable = ivFoto.drawable
-                onImageClick(drawable)
+                if (!foto_keluhan.isNullOrEmpty() && foto_keluhan != "-") {
+                    onImageClick(foto_keluhan) // Pass URL asli
+                } else {
+                    onImageClick(null)
+                }
             }
 
             root.setOnClickListener {
