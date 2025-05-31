@@ -31,7 +31,16 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
+        <!-- Tambahkan di dalam tag <application> di AndroidManifest.xml -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
         <!-- SplashActivity dijalankan pertama kali -->
         <activity
             android:name=".SplashActivity"

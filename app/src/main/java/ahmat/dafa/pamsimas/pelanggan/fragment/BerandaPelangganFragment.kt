@@ -416,7 +416,7 @@ class BerandaPelangganFragment : Fragment() {
 
     private fun showStoredUserData() {
         val nama = sharedPreferences.getString("nama", null)
-        b.tvCustomerName.text = "Halo, ${nama}" ?: "Tidak Ditemukan"
+        b.tvCustomerName.text = "Halo, pelanggan\n${nama}" ?: "Tidak Ditemukan"
     }
 
     private fun showError(message: String) {
