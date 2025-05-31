@@ -220,7 +220,6 @@ class CetakActivity  : AppCompatActivity() {
 
     private fun generateReceiptText(): String {
         val transaksi = currentTransaksi?.data ?: return ""
-
         val stringBuilder = StringBuilder()
         stringBuilder.append("         PAMSIMAS\n")
         stringBuilder.append("      Ds.Tenggerlor\n")
@@ -233,8 +232,8 @@ class CetakActivity  : AppCompatActivity() {
         stringBuilder.append("Nama            : ${transaksi.nama_pelanggan}\n")
         stringBuilder.append("Alamat          : ${transaksi.alamat_pelanggan}\n")
         stringBuilder.append("Nama Petugas    : ${transaksi.nama_petugas}\n")
-        stringBuilder.append("Tanggal Mencatat: ${transaksi.tanggal_pencatatan}\n")
-        stringBuilder.append("Tanggal Bayar   : ${transaksi.tanggal_pembayaran}\n")
+        stringBuilder.append("Tgl catat: ${transaksi.tanggal_pencatatan}\n")
+        stringBuilder.append("Tgl Bayar: ${transaksi.tanggal_pembayaran}\n")
         stringBuilder.append("-----------------------------\n")
         stringBuilder.append("DETAIL PENGGUNAAN AIR\n")
         stringBuilder.append("-----------------------------\n")
@@ -258,8 +257,7 @@ class CetakActivity  : AppCompatActivity() {
         stringBuilder.append("KEMBALIAN       : Rp ${formatCurrency(transaksi.kembalian)}\n")
         stringBuilder.append("=============================\n")
 
-        stringBuilder.append("Terima kasih atas pembayaran Anda\n")
-        stringBuilder.append("Simpan struk ini sebagai bukti pembayaran\n")
+        stringBuilder.append("Terima kasih\n")
 
         return stringBuilder.toString()
     }
