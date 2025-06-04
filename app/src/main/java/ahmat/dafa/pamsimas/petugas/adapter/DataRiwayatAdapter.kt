@@ -4,30 +4,21 @@ import TransaksiBayarResponse
 import ahmat.dafa.pamsimas.R
 import ahmat.dafa.pamsimas.databinding.ItemRiwayatBinding
 import ahmat.dafa.pamsimas.model.Transaksi
-import ahmat.dafa.pamsimas.model.TransaksiResponse
 import ahmat.dafa.pamsimas.network.ApiClient
 import ahmat.dafa.pamsimas.petugas.CetakActivity
-import ahmat.dafa.pamsimas.petugas.LanjutBayarActivity
-import ahmat.dafa.pamsimas.petugas.PencatatanActivity
+import ahmat.dafa.pamsimas.petugas.PelunasanAdapter
 import ahmat.dafa.pamsimas.utils.CurrencyHelper.formatCurrency
 import android.app.Dialog
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.google.gson.Gson
-import okhttp3.Callback
 import retrofit2.Call
 import retrofit2.Response
 
@@ -126,11 +117,11 @@ class DataRiwayatAdapter(
                             }
                         })
                     } else {
-                        // Belum lunas: Intent ke LanjutBayarActivity
-//                        val intent = Intent(root.context, LanjutBayarActivity::class.java)
-//                        Log.d("DataTransaksiKirim", item.toString())
-//                        intent.putExtra("data_transaksi", item)
-//                        root.context.startActivity(intent)
+                        // Belum lunas: Intent ke PaymentGatewayActivity
+                        val intent = Intent(root.context, PelunasanAdapter::class.java)
+                        Log.d("DataTransaksiKirim", item.toString())
+                        intent.putExtra("data_transaksi", item)
+                        root.context.startActivity(intent)
                         Toast.makeText(root.context, "Transaksi belum dilakukan pembayaran.", Toast.LENGTH_SHORT).show()
                     }
                 }

@@ -72,7 +72,14 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait">
         </activity>
-
+        <activity
+            android:name=".petugas.adapter.PaymentGatewayAdapter"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".petugas.PelunasanAdapter"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <!-- PencatatanActivity sebagai aktivitas utama -->
         <activity
             android:name=".petugas.PencatatanActivity"
