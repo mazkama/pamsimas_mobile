@@ -203,7 +203,7 @@ class CetakActivity  : AppCompatActivity() {
             kategoriAdapter = KategoriAdapter(kategoriList)
             b.rvKategori.layoutManager = LinearLayoutManager(this)
             b.rvKategori.adapter = kategoriAdapter
-
+            b.tvDenda.text = "Rp ${formatCurrency(pemakaian.data.denda ?: 0)}"
             b.tvAmountPaid.text= "Rp ${formatCurrency(pemakaian.data.jumlah_bayar)}"
             b.tvChange.text = "Rp ${formatCurrency(pemakaian.data.kembalian)}"
         }
@@ -248,7 +248,7 @@ class CetakActivity  : AppCompatActivity() {
         for (kategori in transaksi.detail_biaya.kategori) {
             stringBuilder.append("${kategori.volume} m³ x Rp.${formatCurrency(kategori.tarif)} : Rp ${formatCurrency(kategori.subtotal)}\n")
         }
-
+        stringBuilder.append("Denda           : Rp ${formatCurrency(transaksi.denda)}\n")
         stringBuilder.append("-----------------------------\n")
         stringBuilder.append("TOTAL TAGIHAN   : Rp ${formatCurrency(transaksi.total_tagihan)}\n")
         stringBuilder.append("-----------------------------\n")

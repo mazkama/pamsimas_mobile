@@ -21,7 +21,7 @@ class PaymentGatewayAdapter : AppCompatActivity() {
         setupBackButton()
 
         // Contoh URL payment gateway - ganti dengan URL yang sesuai
-        val paymentUrl = "https://dev.xen.to/WDDyoaCP"
+        val paymentUrl = "https://dev.xen.to/iPi2_2V3"
         loadPaymentGateway(paymentUrl)
     }
 

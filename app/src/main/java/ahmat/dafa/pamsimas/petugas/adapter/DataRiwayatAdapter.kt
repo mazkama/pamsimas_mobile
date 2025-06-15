@@ -6,7 +6,6 @@ import ahmat.dafa.pamsimas.databinding.ItemRiwayatBinding
 import ahmat.dafa.pamsimas.model.Transaksi
 import ahmat.dafa.pamsimas.network.ApiClient
 import ahmat.dafa.pamsimas.petugas.CetakActivity
-import ahmat.dafa.pamsimas.petugas.PelunasanAdapter
 import ahmat.dafa.pamsimas.utils.CurrencyHelper.formatCurrency
 import android.app.Dialog
 import android.content.Context
@@ -117,12 +116,15 @@ class DataRiwayatAdapter(
                             }
                         })
                     } else {
-                        // Belum lunas: Intent ke PaymentGatewayActivity
-                        val intent = Intent(root.context, PelunasanAdapter::class.java)
-                        Log.d("DataTransaksiKirim", item.toString())
-                        intent.putExtra("data_transaksi", item)
-                        root.context.startActivity(intent)
-                        Toast.makeText(root.context, "Transaksi belum dilakukan pembayaran.", Toast.LENGTH_SHORT).show()
+//                        // Belum lunas: Intent ke PaymentGatewayActivity
+//                        val intent = Intent(root.context, PaymentGatewayAdapter::class.java)
+//                        Log.d("DataTransaksiKirim", item.toString())
+//                        intent.putExtra("data_transaksi", item)
+//                        root.context.startActivity(intent)
+//                        Toast.makeText(root.context, "Transaksi belum dilakukan pembayaran.", Toast.LENGTH_SHORT).show()
+                        // Belum lunas
+                        Toast.makeText(root.context, "Silahkan Bayar Di Kantor PAMSIMAS.", Toast.LENGTH_SHORT).show()
+//
                     }
                 }
 
