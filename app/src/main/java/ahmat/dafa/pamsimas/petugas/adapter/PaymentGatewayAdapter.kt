@@ -21,7 +21,7 @@ class PaymentGatewayAdapter : AppCompatActivity() {
         setupBackButton()
 
         // Contoh URL payment gateway - ganti dengan URL yang sesuai
-        val paymentUrl = "https://app.sandbox.midtrans.com/payment-links/1749007645025"
+        val paymentUrl = "https://dev.xen.to/WDDyoaCP"
         loadPaymentGateway(paymentUrl)
     }
 

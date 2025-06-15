@@ -105,28 +105,28 @@ class PencatatanActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
             finish()
         }
-        // Fungsi untuk mengambil foto dari kamera atau galeri
-        b.btnTakePhoto.setOnClickListener {
-            val options = arrayOf("Ambil Foto", "Pilih dari Galeri")
-            val builder = android.app.AlertDialog.Builder(this)
-            builder.setItems(options) { _, which ->
-                when (which) {
-                    0 -> openCamera() // Pilih untuk mengambil foto dengan kamera
-                    1 -> openGallery() // Pilih untuk memilih gambar dari galeri
+            // Fungsi untuk mengambil foto dari kamera atau galeri
+            b.btnTakePhoto.setOnClickListener {
+                val options = arrayOf("Ambil Foto", "Pilih dari Galeri")
+                val builder = android.app.AlertDialog.Builder(this)
+                builder.setItems(options) { _, which ->
+                    when (which) {
+                        0 -> openCamera() // Pilih untuk mengambil foto dengan kamera
+                        1 -> openGallery() // Pilih untuk memilih gambar dari galeri
+                    }
                 }
+                builder.show()
             }
-            builder.show()
-        }
 
-        // Fungsi untuk tombol simpan data
-        b.btnSaveOnly.setOnClickListener {
-            // Cek jika proses sedang berjalan
-            if (isProcessing) {
-                Toast.makeText(this, "Sedang memproses data, harap tunggu...", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            // Fungsi untuk tombol simpan data
+            b.btnSaveOnly.setOnClickListener {
+                // Cek jika proses sedang berjalan
+                if (isProcessing) {
+                    Toast.makeText(this, "Sedang memproses data, harap tunggu...", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                sendPemakaianStore() // Panggil fungsi kirim data ke API
             }
-            sendPemakaianStore() // Panggil fungsi kirim data ke API
-        }
 
         // Fungsi untuk tombol lanjut pembayaran (jika diperlukan)
         b.btnProceedPayment.setOnClickListener {

@@ -40,7 +40,6 @@ class PelunasanAdapter : AppCompatActivity() {
         transaksiData?.let { transaksi ->
             // Set data pencatatan
             binding.idPencatatan.text = transaksi.id_pemakaian.toString()
-            // Asumsi tanggal pencatatan ada di transaksi, sesuaikan dengan field yang tersedia
             binding.tvPreviousDate.text = transaksi.tanggal_pencatatan ?: "Tidak tersedia"
 
             // Set data penggunaan air
@@ -48,15 +47,11 @@ class PelunasanAdapter : AppCompatActivity() {
             binding.tvFinalMeter.text = "${transaksi.meter_akhir} m³"
             binding.tvTotalUsage.text = "${transaksi.jumlah_pemakaian} m³"
 
-            // Set total tagihan
-            val totalTagihan = transaksi.total_tagihan ?: 0
-            binding.tvTotalBill.text = "Rp ${formatCurrency(totalTagihan)}"
-
             // Set biaya beban
             val baseFee = transaksi.detail_biaya?.beban?.tarif ?: 0
             binding.tvBaseFee.text = "Rp ${formatCurrency(baseFee)}"
 
-            // Setup RecyclerView untuk kategori - menggunakan pattern yang sama seperti LanjutBayarActivity
+            // Setup RecyclerView untuk kategori
             transaksi.detail_biaya?.kategori?.let { kategoriFromTransaksi ->
                 kategoriList.clear()
                 kategoriList.addAll(kategoriFromTransaksi)
@@ -65,13 +60,13 @@ class PelunasanAdapter : AppCompatActivity() {
                 binding.rvKategori.adapter = kategoriAdapter
             }
 
-            // Set biaya air dan admin
-            val biayaAdmin = 4000 // Biaya admin tetap
-            val totalDenganAdmin = totalTagihan + biayaAdmin
+            // Set denda (tampilan saja, logika nanti)
+            val denda = 0 // Placeholder, logika denda akan ditambahkan nanti
+            binding.tvPenalty.text = "Rp ${formatCurrency(denda)}"
 
-            binding.tvWaterFee.text = "Rp ${formatCurrency(totalTagihan)}"
-            binding.tvAdminFee.text = "Rp ${formatCurrency(biayaAdmin)}"
-            binding.tvTotalBill2.text = "Rp ${formatCurrency(totalDenganAdmin)}"
+            // Set total tagihan
+            val totalTagihan = transaksi.total_tagihan ?: 0
+            binding.tvTotalBill.text = "Rp ${formatCurrency(totalTagihan)}"
         }
     }
 
@@ -81,39 +76,11 @@ class PelunasanAdapter : AppCompatActivity() {
             finish()
         }
 
-        // Payment method selection (placeholder)
-        // 1. Perbaikan kode onClick listener
-        binding.btnSelectPaymentMethod.setOnClickListener {
-            val intent = Intent(this, PaymentGatewayAdapter::class.java)
-            startActivity(intent)
-        }
-
         // Payment button
         binding.btnPay.setOnClickListener {
-            processPayment()
+            val intent = Intent(this, PaymentGatewayAdapter::class.java)
+            intent.putExtra("data_transaksi", transaksiData)
+            startActivity(intent)
         }
     }
-
-    private fun processPayment() {
-        transaksiData?.let { transaksi ->
-            // Implementasi proses pembayaran
-            Toast.makeText(this, "Belum", Toast.LENGTH_SHORT).show()
-
-//            val idTransaksi = transaksi.id_transaksi.toString()
-//            val totalBillText = binding.tvTotalBill2.text.toString()
-//            val totalBill = cleanCurrencyString(totalBillText).toIntOrNull() ?: 0
-//
-//            // TODO: Implementasi logika pembayaran sesuai gateway yang digunakan
-//            // Contoh: integrasi dengan Midtrans, Xendit, dll
-//            // Gunakan idTransaksi dan totalBill untuk proses pembayaran
-//
-//            // Log untuk debugging
-//            android.util.Log.d("PaymentGateway", "ID Transaksi: $idTransaksi, Total: $totalBill")
-        }
     }
-
-    // Override onBackPressed untuk konsistensi dengan LanjutBayarActivity
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-}
