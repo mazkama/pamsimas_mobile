@@ -37,6 +37,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import java.util.Calendar
 
 class DataPemakaianFragment : Fragment() {
 
@@ -132,8 +133,32 @@ class DataPemakaianFragment : Fragment() {
         barcodeLauncher.launch(options)
     }
 
+    // FUNGSI BARU: Validasi tanggal pencatatan
+    private fun isPencatatanAllowed(): Boolean {
+        val calendar = Calendar.getInstance()
+        val today = calendar.get(Calendar.DAY_OF_MONTH)
+        return today == 6
+    }
+
+    // FUNGSI BARU: Menampilkan pesan error jika bukan tanggal 20
+    private fun showDateRestrictionMessage() {
+        val calendar = Calendar.getInstance()
+        val today = calendar.get(Calendar.DAY_OF_MONTH)
+        Toast.makeText(
+            thisParent,
+            "Pencatatan hanya diperbolehkan pada tanggal 20. Hari ini tanggal $today.",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
     private fun setupRecyclerView() {
         pemakaianAdapter = DataPemakaianAdapter(pemakaianList) { pemakaian ->
+            // MODIFIKASI: Tambahkan validasi tanggal sebelum membuka pencatatan
+            if (!isPencatatanAllowed()) {
+                showDateRestrictionMessage()
+                return@DataPemakaianAdapter
+            }
+
             // Aksi saat item diklik
             val intent = Intent(thisParent, PencatatanActivity::class.java)
             intent.putExtra("data_pemakaian", pemakaian)
@@ -193,6 +218,12 @@ class DataPemakaianFragment : Fragment() {
                             Toast.makeText(thisParent, "Sudah tercatat pada bulan ini", Toast.LENGTH_SHORT).show()
                             dialog.dismiss()
                         }else{
+                            // MODIFIKASI: Tambahkan validasi tanggal sebelum membuka pencatatan
+                            if (!isPencatatanAllowed()) {
+                                showDateRestrictionMessage()
+                                return
+                            }
+
                             val intent = Intent(context, PencatatanActivity::class.java)
                             intent.putExtra("data_pemakaian", item) // langsung kirim objek
                             startActivity(intent)
